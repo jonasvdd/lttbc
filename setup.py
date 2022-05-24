@@ -19,7 +19,7 @@ class numpy_get_include:
         return numpy.get_include()
 
 
-lttbc_py = Extension("lttbc", sources=["lttbc.c"],
+lttbc_py = Extension("lttbcv2", sources=["lttbcv2.c"],
                      define_macros=[
                          ("NPY_NO_DEPRECATED_API", "NPY_1_7_API_VERSION")],
                      include_dirs=[numpy_get_include(),
@@ -27,31 +27,17 @@ lttbc_py = Extension("lttbc", sources=["lttbc.c"],
                      )
 
 setup(
-    name="lttbc",
-    author="European XFEL GmbH",
-    use_scm_version=True,
+    name="lttbcv2",
+    author="Jonas Van Der Donckt",
     ext_modules=[lttbc_py],
-    author_email="dennis.goeries@xfel.eu",
-    maintainer="Dennis Goeries",
+    author_email="jonvdrdo.vanderdonckt@ugent.be",
+    maintainer="Jonas Van Der Donckt",
     url="https://github.com/dgoeries/lttbc/",
     description="Largest triangle three buckets module for Python written in C",
     long_description=read("README.txt"),
     long_description_content_type="text/markdown",
     license="MIT",
     install_requires=["numpy"],
-    setup_requires=["setuptools_scm"],
     python_requires=">=3.5",
-    classifiers=[
-        "Development Status :: 5 - Production/Stable",
-        "Environment :: Console",
-        "Intended Audience :: Developers",
-        "Intended Audience :: Science/Research",
-        "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Independent",
-        "Programming Language :: Python :: 3",
-        "Programming Language :: Python :: Implementation :: CPython",
-        "Topic :: Scientific/Engineering :: Information Analysis",
-        "Topic :: Scientific/Engineering :: Physics",
-        "Topic :: Scientific/Engineering :: Visualization",
-    ],
+
 )
