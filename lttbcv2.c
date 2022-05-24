@@ -6,6 +6,8 @@
 
 
 
+// Min-max downsampling algorithm which determines the minimum and maximum values within
+// each bucket.
 static PyObject* min_max_downsample(PyObject *self, PyObject *args) {
     // remove the x-parameter
     int threshold;
@@ -79,7 +81,10 @@ static PyObject* min_max_downsample(PyObject *self, PyObject *args) {
     }
     sampled_index++;
     Py_ssize_t i;
+
+    // ----------------------- The real algorithm -----------------------
     // This double for loop still is to slow
+    // Aditionally this algorithm can be parallized
     for (i = 0; i < (threshold - 2) / 2; ++i) {
         // Get the range for this bucket
         Py_ssize_t range_offs = (Py_ssize_t)(floor((i + 0) * every) + 1);
@@ -87,6 +92,7 @@ static PyObject* min_max_downsample(PyObject *self, PyObject *args) {
 
         double chunk_max = y[range_offs];
         double chunk_min = y[range_offs];
+        // TODO: I think for loop can be be optimized
         for (; range_offs < range_to; range_offs++){
             // Calculate triangle area over three buckets
             if (chunk_max < y[range_offs]){
@@ -549,12 +555,12 @@ static PyMethodDef lttbcv2_methods[] = {
         METH_VARARGS,
         "Compute the largest triangle three buckets (LTTB) algorithm in a C extension."
     },
-    // {
-    //     "min_max_downsample", // The name of the method
-    //     min_max_downsample, // Function pointer to the method implementation
-    //     METH_VARARGS,
-    //     "Compute the largest triangle three buckets (LTTB) algorithm in a C extension."
-    // },
+    {
+        "min_max_downsample", // The name of the method
+        min_max_downsample, // Function pointer to the method implementation
+        METH_VARARGS,
+        "Compute the largest triangle three buckets (LTTB) algorithm in a C extension."
+    },
     {NULL, NULL, 0, NULL}
 };
 
